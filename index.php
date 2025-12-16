@@ -1,28 +1,28 @@
 <?php
+declare(strict_types=1);
 
 require_once __DIR__."/assets/header.php";
 
-$database = __DIR__.'/assets/database.db';
-
+//KOLLA PHP22 UPPGIFT 3 ASAP
 
 ?>
 
 <html>
-    <form>
+    <form action='backend/booking.php' method="post">
         <label for="nameInput">name</label>
-        <input id="nameInput" type="text" placeholder="name"/>
+        <input name="nameInput" id="nameInput" type="text" placeholder="name"/>
 
         <label for="codeInput">transferCode</label>
-        <input id="codeInput" type="text" placeholder="code"/>
+        <input name="codeInput" id="codeInput" type="text" placeholder="code"/>
 
         <label for="roomInput">room</label>
-        <input id="roomInput" type="text" placeholder="room"/>
+        <input name="roomInput" id="roomInput" type="text" placeholder="room"/>
 
         <label for="arrivalInput">arrival</label>
-        <input id="arrivalInput" type="text" placeholder="arrival"/>
+        <input name="arrivalInput" id="arrivalInput" type="text" placeholder="arrival"/>
 
         <label for="departureInput">departure</label>
-        <input id="departureInput" type="text" placeholder="departure"/>
+        <input name="departureInput" id="departureInput" type="text" placeholder="departure"/>
 
         <p>
             Attraction 1
