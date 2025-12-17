@@ -16,25 +16,29 @@ require_once __DIR__."/assets/header.php";
         <input name="codeInput" id="codeInput" type="text" placeholder="code"/>
 
         <label for="roomInput">room</label>
-        <input name="roomInput" id="roomInput" type="text" placeholder="room"/>
+        <select name="roomInput" id="roomInput" type="text" placeholder="room">
+            <option value="Economy">Economy</option>
+            <option value="Standard">Standard</option>
+            <option value="Luxury">Luxury</option>
+        </select>
 
         <label for="arrivalInput">arrival</label>
-        <input name="arrivalInput" id="arrivalInput" type="text" placeholder="arrival"/>
+        <input name="arrivalInput" id="arrivalInput" type="date" placeholder="arrival"  min="2026-01-01" max="2026-01-31"/>
 
         <label for="departureInput">departure</label>
-        <input name="departureInput" id="departureInput" type="text" placeholder="departure"/>
+        <input name="departureInput" id="departureInput" type="date" placeholder="departure"  min="2026-01-01" max="2026-01-31"/>
 
         <p>
             Attraction 1
         </p>
 
-        <input type="checkbox" label="cheap1"/>
+        <input type="radio" label="cheap1"/>
         
-        <input type="checkbox" label="medium1"/>
+        <input type="radio" label="medium1"/>
 
-        <input type="checkbox" label="expensive1"/>
+        <input type="radio" label="expensive1"/>
 
-        <input type="checkbox" label="superexpensive1"/>
+        <input type="radio" label="superexpensive1"/>
 
         <br>
 
