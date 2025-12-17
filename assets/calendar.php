@@ -10,7 +10,6 @@ $booked = [2, 6, 19, 27, 28];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendar</title>
     <link rel="stylesheet" href="/styles/calendar.css">
 </head>
 

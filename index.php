@@ -17,9 +17,9 @@ require_once __DIR__."/assets/header.php";
 
         <label for="roomInput">room</label>
         <select name="roomInput" id="roomInput" type="text" placeholder="room">
-            <option value="Economy">Economy</option>
-            <option value="Standard">Standard</option>
-            <option value="Luxury">Luxury</option>
+            <option value="1">Economy</option>
+            <option value="2">Standard</option>
+            <option value="3">Luxury</option>
         </select>
 
         <label for="arrivalInput">arrival</label>
