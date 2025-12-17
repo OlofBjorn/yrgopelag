@@ -49,4 +49,6 @@ require_once __DIR__."/assets/header.php";
 
 <?php
 
+require_once __DIR__."/assets/calendar.php";
+
 require_once __DIR__."/assets/footer.php";
