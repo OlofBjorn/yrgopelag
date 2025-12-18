@@ -31,15 +31,19 @@ require_once __DIR__."/assets/header.php";
         <p>
             Attraction 1
         </p>
-
-        <input type="radio" label="cheap1"/>
-        
-        <input type="radio" label="medium1"/>
-
-        <input type="radio" label="expensive1"/>
-
-        <input type="radio" label="superexpensive1"/>
-
+        <fieldset>
+            <legend>Water Activities: Please select your tier</legend>
+                <div>
+                    <input type="checkbox" name="checkbox[]" label="cheap1" value=1 />
+                    <label for="cheap1">Pool</label>
+                    <input type="checkbox" name="checkbox[]" label="medium1" value=2 />
+                    <label for="medium1">Scuba Diving</label>
+                    <input type="checkbox" name="checkbox[]" label="expensive1" value=3 />
+                    <label for="expensive1">Olympic Pool</label>
+                    <input type="checkbox" name="checkbox[]" label="superexpensive1" value=4 />
+                    <label for="superexpensive1">Waterpark with Fire and Minibar</label>
+                </div>
+        </fieldset>
         <br>
 
         <input type="submit" value="submit"/>
