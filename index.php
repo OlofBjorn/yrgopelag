@@ -13,7 +13,7 @@ require_once __DIR__."/assets/header.php";
         <input name="nameInput" id="nameInput" type="text" placeholder="name"/>
 
         <label for="codeInput">transferCode</label>
-        <input name="codeInput" id="codeInput" type="text" placeholder="code"/>
+        <input name="codeInput" id="codeInput" type="password" placeholder="code"/>
 
         <label for="roomInput">room</label>
         <select name="roomInput" id="roomInput" type="text" placeholder="room">
