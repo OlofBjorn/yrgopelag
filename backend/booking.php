@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require __DIR__ . '/functions.php';
+
 require(__DIR__ . '/../vendor/autoload.php');
 
 use GuzzleHttp\Client;
@@ -41,21 +43,47 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
                 'base_uri' => 'https://www.yrgopelag.se/centralbank/transferCode',
             ]);
 
-            try{
-                $r = $client->request('POST', 'https://www.yrgopelag.se/centralbank/transferCode', [
-                    'form_params' => [
-                        'transferCode' => $codeInput, 
-                        'totalCost' => '5'
-                        ]
-                ]);
+            try {
+                $response = $client->request('POST', 'https://www.yrgopelag.se/centralbank/transferCode', [
+                'form_params' => [
+                    'transferCode' => $codeInput,
+                    'totalCost' => 5
+                ]
+            ]);
+
+                $body = json_decode($response->getBody()->getContents(), true);
+                var_dump($body);
+
+            } catch (\GuzzleHttp\Exception\ClientException $codeError) {
+                //Rejected code
+                $errorBody = json_decode($codeError->getResponse()->getBody()->getContents(), true);
+                //echo $errorBody['error'] ?? 'Invalid transferCode >:(';
+                exit;
             }
+
+            /*
             catch (\Exception $codeError){
-                echo "Error, invalid or used code";
+                $response = "Error, invalid or used code";
+                echo $response;
             }
 
-            var_dump($r->getBody()->getContents()); 
+            //TODO: FIX GETBODY ERROR ON INVALID CODE
+            var_dump($response->getBody()->getContents()); */
 
 
+            try {
+                $totalCost = calculateTotalPrice(
+                    (int) $roomInput,
+                    $arrivalInput,
+                    $departureInput,
+                    $checkboxes ?? []
+                );
+            } catch (Exception $e) {
+                echo $e->getMessage();
+                exit;
+            }
+
+            //'totalCost' => $totalCost
 
             // -----------------------------------------------------
 
@@ -108,6 +136,8 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
                 $statement->execute();
             };
 
+            //ENSURING TOTAL COST IS WORKING
+            echo "total cost is $totalCost";
         }
     }
 }
