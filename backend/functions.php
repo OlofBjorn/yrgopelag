@@ -21,6 +21,9 @@ foreach($activityPrices as $key => $value)
 
 declare(strict_types=1);
 
+$databaseLocation = "sqlite:".__DIR__.'/database.db';
+$database = new PDO($databaseLocation);
+
 const ROOM_PRICES = [
     1 => 1.0, // ECONOMY
     2 => 2.0, // STANDARD
@@ -34,6 +37,8 @@ const ACTIVITY_PRICES = [
     4 => 3.5,   // SUPERIOR
 ];
 
+//-------------------------------------------------------------------
+
 function calculateNights(string $arrival, string $departure): int
 {
     $arrivalDate = new DateTime($arrival);
@@ -41,6 +46,8 @@ function calculateNights(string $arrival, string $departure): int
 
     return (int) $arrivalDate->diff($departureDate)->days;
 }
+
+//-----------------------------------------------------------------
 
 function calculateRoomCost(int $roomId, int $nights): float
 {
@@ -64,6 +71,8 @@ function calculateActivityCost(array $activities): float
     return $priceSum;
 }
 
+// -------------------------------------------------------
+
 function calculateTotalPrice(
     int $roomId,
     string $arrival,
@@ -81,3 +90,22 @@ function calculateTotalPrice(
 
     return $roomCost + $activityCost;
 }
+
+//--------------------------------------------------------------
+
+function isRoomAvailable(
+    PDO $database,
+    int $roomId,
+    string $arrival,
+    string $departure
+): bool {
+    $query = "SELECT COUNT(*) FROM visits WHERE room_id = :room_id AND arrival < :departure AND departure > :arrival";
+
+    $statement = $database->prepare($query);
+    $statement->bindValue(':room_id', $roomId, PDO::PARAM_INT);
+    $statement->bindValue(':arrival', $arrival, PDO::PARAM_STR);
+    $statement->bindValue(':departure', $departure, PDO::PARAM_STR);
+    $statement->execute();
+    return (int) $statement->fetchColumn() === 0;
+}
+

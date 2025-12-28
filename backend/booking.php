@@ -10,9 +10,6 @@ use GuzzleHttp\Client;
 
 
 
-
-$databaseLocation = "sqlite:".__DIR__.'/database.db';
-$database = new PDO($databaseLocation);
 // CODE ONLY CHECKS IF SET, NOT IF EMPTY STRING
 //TODO: MAKE SURE ARRIVAL AND DEPARTURE HAVE AN ACTUAL VALUE AND THAT ARRIVAL MUST BE SMALLER THAN DEPARTURE
 if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST['departureInput'], $_POST['checkbox'])) {
@@ -33,6 +30,17 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
         if($arrivalInput>$departureInput){
             echo 'No time traveling!';
         }else{
+
+            if (!isRoomAvailable(
+                $database,
+                (int)$roomInput,
+                $arrivalInput,
+                $departureInput
+            )) {
+                echo "Sorry, this room is already booked for those dates.";
+                exit;
+            }
+
 
             // ---------------------------------------------------
 
