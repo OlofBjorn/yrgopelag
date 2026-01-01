@@ -73,6 +73,28 @@ foreach ($visits as $visit) {
     }
 }
 
+// ----------------------------------------------------
+
+$query = "SELECT arrival, departure FROM visits WHERE room_id = 3";
+
+$statement = $database->prepare($query);
+$statement->execute();
+$visits = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+$bookedDaysLux = [];
+
+foreach ($visits as $visit) {
+    $start = new DateTime($visit['arrival']);
+    $end   = new DateTime($visit['departure']);
+ 
+    while ($start < $end) {
+        if ($start->format('Y-m') === '2026-01') {
+            $bookedDaysLux[] = (int)$start->format('j');
+        }
+        $start->modify('+1 day');
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -97,9 +119,18 @@ foreach ($visits as $visit) {
             </div>
         <?php endfor; ?>
     </section>
-        <section class="calendar" id="standardCalendar">
+    <section class="calendar" id="standardCalendar">
         <?php for ($day = 1; $day <= 31; $day++): 
             $isBooked = in_array($day, $bookedDaysSta, true);
+        ?>
+            <div class="day <?= $isBooked ? 'booked' : '' ?>">
+                <?= $day ?>
+            </div>
+        <?php endfor; ?>
+    </section>
+    <section class="calendar" id="luxuryCalendar">
+        <?php for ($day = 1; $day <= 31; $day++): 
+            $isBooked = in_array($day, $bookedDaysLux, true);
         ?>
             <div class="day <?= $isBooked ? 'booked' : '' ?>">
                 <?= $day ?>

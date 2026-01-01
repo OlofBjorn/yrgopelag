@@ -93,6 +93,9 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
             //TODO: FIX GETBODY ERROR ON INVALID CODE
             var_dump($response->getBody()->getContents()); */
 
+            $checkboxes = array_map(function($value) {
+                return trim($value, '/');  // Removes any leading or trailing slashes
+            }, $_POST['checkbox']);
 
             try {
                 $totalCost = calculateTotalPrice(
@@ -166,24 +169,24 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
 
             //htmlspecialchars is not working, must determine cause
 
-            var_dump(htmlspecialchars("BOOKING COMPLETE! Customer name = $nameInput"));
+            //var_dump(htmlspecialchars("BOOKING COMPLETE! Customer name = $nameInput"));
 
-            echo htmlspecialchars("BOOKING COMPLETE! Customer name = $nameInput", ENT_QUOTES, 'UTF-8');
+            //echo htmlspecialchars("BOOKING COMPLETE! Customer name = $nameInput", ENT_QUOTES, 'UTF-8');
 
 
-            echo htmlspecialchars("BOOKING COMPLETE! Customer name = " . $nameInput, ENT_QUOTES, 'UTF-8');
-            echo htmlspecialchars("BOOKING COMPLETE! Customer name = $nameInput", ENT_QUOTES, 'UTF-8');
+            //echo htmlspecialchars("BOOKING COMPLETE! Customer name = " . $nameInput, ENT_QUOTES, 'UTF-8');
+            //echo htmlspecialchars("BOOKING COMPLETE! Customer name = $nameInput", ENT_QUOTES, 'UTF-8');
 
-            echo htmlspecialchars($nameInput, ENT_QUOTES, 'UTF-8');
+            //echo htmlspecialchars($nameInput, ENT_QUOTES, 'UTF-8');
 
-            echo "Hang on";
+            //echo "Hang on";
 
             //$testInput = "<script>alert('XSS')</script>";
             //echo htmlspecialchars($testInput, ENT_QUOTES, 'UTF-8');
 
-            echo htmlspecialchars("BOOKING COMPLETE! Customer name = $nameInput", ENT_QUOTES, 'UTF-8');
+            //echo htmlspecialchars("BOOKING COMPLETE! Customer name = $nameInput", ENT_QUOTES, 'UTF-8');
 
-            echo ini_get('default_charset');
+            //echo ini_get('default_charset');
 
             //$testingInput = "<script>alert('XSS')</script>";
 

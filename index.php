@@ -37,14 +37,35 @@ require __DIR__."/backend/functions.php";
         <fieldset>
             <legend>Water Activities: Please select your tier</legend>
                 <div>
-                    <input type="checkbox" name="checkbox[]" label="cheap1" value=1 />
-                    <label for="cheap1">Pool</label>
-                    <input type="checkbox" name="checkbox[]" label="medium1" value=2 />
-                    <label for="medium1">Scuba Diving</label>
-                    <input type="checkbox" name="checkbox[]" label="expensive1" value=3 />
-                    <label for="expensive1">Olympic Pool</label>
-                    <input type="checkbox" name="checkbox[]" label="superexpensive1" value=4 />
-                    <label for="superexpensive1">Waterpark with Fire and Minibar</label>
+                    <input type="checkbox" name="checkbox[]" label="cheapwater" value=1 />
+                    <label for="cheapwater">Pool - Cost: 0.5</label>
+                </div>
+            <legend>Game Activities: Please select your tier</legend>
+                <div>
+                    <input type="checkbox" name="checkbox[]" label="mediumgame" value=2 />
+                    <label for="mediumgame">Ping Pong - Cost: 1.25</label>
+                </div>
+            <legend>Wheel Activities: Please select your tier</legend>
+                <div>
+                    <input type="checkbox" name="checkbox[]" label="highwheel" value=3 />
+                    <label for="highwheel">Trike - Cost: 2.5</label>
+                </div>
+            <legend>Dinowatching: Please select your tier</legend>
+                <div>
+                    <input type="checkbox" name="checkbox[]" label="cheapdino" value=4 />
+                    <label for="cheapdino">Velociraptor Pen - Cost: 0.5</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="checkbox[]" label="mediumdino" value=5 />
+                    <label for="mediumdino">Triceratops Field - Cost: 1.25</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="checkbox[]" label="highdino" value=6 />
+                    <label for="highdino">T. rex Sightseeing - Cost: 2.5</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="checkbox[]" label="superdino" value=7 />
+                    <label for="superdino">Brachiosaurus Safari - Cost: 3.5</label>
                 </div>
         </fieldset>
         <br>
@@ -62,10 +83,17 @@ require __DIR__."/backend/functions.php";
         };
 
         const ACTIVITY_PRICES = {
-            1: 0.5,  
+            //WATER
+            1: 0.5, 
+            //GAME  
             2: 1.25, 
-            3: 2.5,  
-            4: 3.5   
+            //WHEEL
+            3: 2.5,
+            //DINO  
+            4: 0.5,
+            5: 1.25,
+            6: 2.5,
+            7: 3.5
         };
 
         function calculateTotalPrice() {

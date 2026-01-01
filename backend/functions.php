@@ -31,10 +31,17 @@ const ROOM_PRICES = [
 ];
 
 const ACTIVITY_PRICES = [
-    1 => 0.5,   // ECONOMY
-    2 => 1.25,  // BASIC
-    3 => 2.5,   // PREMIUM
-    4 => 3.5,   // SUPERIOR
+    //WATER
+    1 => 0.5,  // ECONOMY
+    //GAME  
+    2 => 1.25, // BASIC
+    //WHEEL
+    3 => 2.5,  // PREMIUM
+    //DINO  
+    4 => 0.5,  // ECONOMY
+    5 => 1.25, // BASIC
+    6 => 2.5,  // PREMIUM
+    7 => 3.5,  // SUPERIOR
 ];
 
 //-------------------------------------------------------------------
