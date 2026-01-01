@@ -8,18 +8,33 @@ require(__DIR__ . '/../vendor/autoload.php');
 
 use GuzzleHttp\Client;
 
+/*var_dump($_POST);
 
+if (isset($_POST['nameInput'])) {
+    var_dump($_POST['nameInput']);  // Print raw POST value
+} else {
+    echo 'nameInput is not set!';
+}
+
+error_log('Received nameInput: ' . $_POST['nameInput']);*/
 
 // CODE ONLY CHECKS IF SET, NOT IF EMPTY STRING
 //TODO: MAKE SURE ARRIVAL AND DEPARTURE HAVE AN ACTUAL VALUE AND THAT ARRIVAL MUST BE SMALLER THAN DEPARTURE
 if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST['departureInput'], $_POST['checkbox'])) {
-    $nameInput = trim($_POST['nameInput']);
+    //var_dump($_POST['nameInput']);
+    //$nameInput = trim(htmlspecialchars($_POST['nameInput']));
+    $nameInput = trim(htmlspecialchars($_POST['nameInput'], ENT_QUOTES, 'UTF-8'));
+    //var_dump($nameInput);
     $codeInput = trim($_POST['codeInput']);
     $roomInput = trim($_POST['roomInput']);
     $arrivalInput = trim($_POST['arrivalInput']);
     $departureInput = trim($_POST['departureInput']);
 
     $checkboxes = ($_POST['checkbox']);
+
+    //echo htmlspecialchars($nameInput, ENT_QUOTES, 'UTF-8');
+
+//    echo trim(htmlspecialchars($_POST['nameInput']));
 
     if(empty($codeInput)){
         echo 'No code :(';
@@ -60,7 +75,7 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
             ]);
 
                 $body = json_decode($response->getBody()->getContents(), true);
-                var_dump($body);
+                //var_dump($body);
 
             } catch (\GuzzleHttp\Exception\ClientException $codeError) {
                 //Rejected code
@@ -87,13 +102,15 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
                     $checkboxes ?? []
                 );
             } catch (Exception $e) {
-                echo $e->getMessage();
+                echo htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
                 exit;
             }
 
             //'totalCost' => $totalCost
 
             // -----------------------------------------------------
+
+            var_dump(htmlspecialchars($nameInput, ENT_QUOTES, 'UTF-8'));  // See if htmlspecialchars works here
 
             $query = 'INSERT INTO guests (name) VALUES (:nameInput)';
 
@@ -104,9 +121,8 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
             $statement->execute();
 
             $last_user_id = $database->lastInsertId();
-            echo "New record created successfully. Last inserted ID is: " . $last_user_id;
+            //echo "New record created successfully. Last inserted ID is: " . $last_user_id;
 
-            var_dump($statement);
         
             //------------------------------------------------------------
 
@@ -125,11 +141,11 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
             $statement->execute();
             
             $last_visit_id = $database->lastInsertId();
-            echo "New record created successfully. Last inserted ID is: " . $last_visit_id;
+            //echo "New record created successfully. Last inserted ID is: " . $last_visit_id;
 
             //----------------------------------------------------------------
 
-            var_dump($checkboxes);
+            //var_dump($checkboxes);
 
             foreach($checkboxes as $checkbox){
 
@@ -146,6 +162,33 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
 
             //ENSURING TOTAL COST IS WORKING
             echo "total cost is $totalCost";
+
+
+            //htmlspecialchars is not working, must determine cause
+
+            var_dump(htmlspecialchars("BOOKING COMPLETE! Customer name = $nameInput"));
+
+            echo htmlspecialchars("BOOKING COMPLETE! Customer name = $nameInput", ENT_QUOTES, 'UTF-8');
+
+
+            echo htmlspecialchars("BOOKING COMPLETE! Customer name = " . $nameInput, ENT_QUOTES, 'UTF-8');
+            echo htmlspecialchars("BOOKING COMPLETE! Customer name = $nameInput", ENT_QUOTES, 'UTF-8');
+
+            echo htmlspecialchars($nameInput, ENT_QUOTES, 'UTF-8');
+
+            echo "Hang on";
+
+            //$testInput = "<script>alert('XSS')</script>";
+            //echo htmlspecialchars($testInput, ENT_QUOTES, 'UTF-8');
+
+            echo htmlspecialchars("BOOKING COMPLETE! Customer name = $nameInput", ENT_QUOTES, 'UTF-8');
+
+            echo ini_get('default_charset');
+
+            //$testingInput = "<script>alert('XSS')</script>";
+
+            //echo "Raw Input: " . $testingInput . "<br>"; // Raw input for comparison
+            //echo "After htmlspecialchars: " . htmlspecialchars($testingInput, ENT_QUOTES, 'UTF-8') . "<br>";
         }
     }
 }

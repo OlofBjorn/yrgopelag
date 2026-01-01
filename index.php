@@ -3,11 +3,14 @@ declare(strict_types=1);
 
 require_once __DIR__."/assets/header.php";
 
+require __DIR__."/backend/functions.php";
+
 //KOLLA PHP22 UPPGIFT 3 ASAP
 
 ?>
 
 <html>
+    <meta charset="UTF-8">
     <form action='backend/booking.php' method="post">
         <label for="nameInput">name</label>
         <input name="nameInput" id="nameInput" type="text" placeholder="name"/>
@@ -46,9 +49,70 @@ require_once __DIR__."/assets/header.php";
         </fieldset>
         <br>
 
+         <div id="priceDisplay">Current price: $0</div>
+
         <input type="submit" value="submit"/>
     </form>
+        <script>
 
+        const ROOM_PRICES = {
+            1: 1.0, // Economy
+            2: 2.0, // Standard
+            3: 4.0  // Luxury
+        };
+
+        const ACTIVITY_PRICES = {
+            1: 0.5,  
+            2: 1.25, 
+            3: 2.5,  
+            4: 3.5   
+        };
+
+        function calculateTotalPrice() {
+            const roomInput = document.getElementById('roomInput').value;
+            const arrivalInput = document.getElementById('arrivalInput').value;
+            const departureInput = document.getElementById('departureInput').value;
+
+            if (!arrivalInput || !departureInput) return;
+
+            const nights = calculateNights(arrivalInput, departureInput);
+            const roomCost = calculateRoomCost(roomInput, nights);
+
+            const selectedActivities = Array.from(document.querySelectorAll('input[name="checkbox[]"]:checked'))
+                .map(checkbox => parseInt(checkbox.value));
+
+            const activityCost = calculateActivityCost(selectedActivities);
+
+            const totalCost = roomCost + activityCost;
+
+            document.getElementById('priceDisplay').innerText = `Current price: $${totalCost.toFixed(2)}`;
+        }
+
+        function calculateNights(arrival, departure) {
+            const arrivalDate = new Date(arrival);
+            const departureDate = new Date(departure);
+            const timeDiff = departureDate - arrivalDate;
+            return timeDiff / (1000 * 3600 * 24);
+        }
+
+        function calculateRoomCost(roomId, nights) {
+            const roomPrice = ROOM_PRICES[roomId];
+            return roomPrice * nights;
+        }
+
+        function calculateActivityCost(activities) {
+            return activities.reduce((sum, activityId) => sum + ACTIVITY_PRICES[activityId], 0);
+        }
+
+        document.getElementById('roomInput').addEventListener('change', calculateTotalPrice);
+        document.getElementById('arrivalInput').addEventListener('change', calculateTotalPrice);
+        document.getElementById('departureInput').addEventListener('change', calculateTotalPrice);
+        document.querySelectorAll('input[name="checkbox[]"]').forEach(checkbox => {
+            checkbox.addEventListener('change', calculateTotalPrice);
+        });
+
+        calculateTotalPrice();
+    </script>
 </html>
 
 <?php

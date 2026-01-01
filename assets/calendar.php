@@ -37,7 +37,7 @@ $statement = $database->prepare($query);
 $statement->execute();
 $visits = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-$bookedDays = [];
+$bookedDaysEco = [];
 
 foreach ($visits as $visit) {
     $start = new DateTime($visit['arrival']);
@@ -45,7 +45,29 @@ foreach ($visits as $visit) {
  
     while ($start < $end) {
         if ($start->format('Y-m') === '2026-01') {
-            $bookedDays[] = (int)$start->format('j');
+            $bookedDaysEco[] = (int)$start->format('j');
+        }
+        $start->modify('+1 day');
+    }
+}
+
+//--------------------------------------------------------------
+
+$query = "SELECT arrival, departure FROM visits WHERE room_id = 2";
+
+$statement = $database->prepare($query);
+$statement->execute();
+$visits = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+$bookedDaysSta = [];
+
+foreach ($visits as $visit) {
+    $start = new DateTime($visit['arrival']);
+    $end   = new DateTime($visit['departure']);
+ 
+    while ($start < $end) {
+        if ($start->format('Y-m') === '2026-01') {
+            $bookedDaysSta[] = (int)$start->format('j');
         }
         $start->modify('+1 day');
     }
@@ -66,9 +88,18 @@ foreach ($visits as $visit) {
 </body>
 
 </html>
-    <section class="calendar">
+    <section class="calendar" id="ecoCalendar">
         <?php for ($day = 1; $day <= 31; $day++): 
-            $isBooked = in_array($day, $bookedDays, true);
+            $isBooked = in_array($day, $bookedDaysEco, true);
+        ?>
+            <div class="day <?= $isBooked ? 'booked' : '' ?>">
+                <?= $day ?>
+            </div>
+        <?php endfor; ?>
+    </section>
+        <section class="calendar" id="standardCalendar">
+        <?php for ($day = 1; $day <= 31; $day++): 
+            $isBooked = in_array($day, $bookedDaysSta, true);
         ?>
             <div class="day <?= $isBooked ? 'booked' : '' ?>">
                 <?= $day ?>

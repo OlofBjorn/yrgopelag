@@ -60,7 +60,7 @@ function calculateRoomCost(int $roomId, int $nights): float
 
 function calculateActivityCost(array $activities): float
 {
-    $sum = 0.0;
+    $priceSum = 0.0;
 
     foreach ($activities as $activityId) {
         if (isset(ACTIVITY_PRICES[$activityId])) {
