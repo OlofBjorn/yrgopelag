@@ -2,9 +2,16 @@
 
 declare(strict_types=1);
 
+require(__DIR__ . '/../vendor/autoload.php');
 require __DIR__ . '/functions.php';
 
-require(__DIR__ . '/../vendor/autoload.php');
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
+
+//var_dump($_ENV['API_KEY']);
+//exit;
 
 use GuzzleHttp\Client;
 
@@ -23,8 +30,9 @@ error_log('Received nameInput: ' . $_POST['nameInput']);*/
 if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST['departureInput'],$_POST['checkbox'])) {
     //var_dump($_POST['nameInput']);
     //$nameInput = trim(htmlspecialchars($_POST['nameInput']));
-    $nameInput = trim(htmlspecialchars($_POST['nameInput'], ENT_QUOTES, 'UTF-8'));
+    //$nameInput = trim(htmlspecialchars($_POST['nameInput'], ENT_QUOTES, 'UTF-8'));
     //var_dump($nameInput);
+    $nameInput = trim($_POST['nameInput']);
     $codeInput = trim($_POST['codeInput']);
     $roomInput = trim($_POST['roomInput']);
     $arrivalInput = trim($_POST['arrivalInput']);
@@ -127,6 +135,40 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
 
             echo "code validated";
 
+            // --------------------------------------------------
+
+
+            //echo $_ENV['API_KEY'];
+
+            /*$receiptClient = new Client([
+                'base_uri' => 'https://www.yrgopelag.se/centralbank/',
+                'headers' => [
+                    'Content-Type' => 'application/json'
+                ]
+            ]);
+
+            $receiptResponse = $receiptClient->request('POST', 'receipt', [
+                'json' => [
+                    'user' => 'Olof',
+                    'api_key' => $_ENV['API_KEY'],
+                    'guest_name' => $nameInput,
+                    'arrival_date' => $arrivalInput,
+                    'departure_date' => $departureInput,
+                    'features_used' => array_map(
+                        fn ($activityId) => mapActivityIdToReceiptFormat((int)$activityId),
+                        $checkboxes
+                    ),
+                    'star_rating' => 1
+                ]
+            ])
+
+            $receiptBody = json_decode($receiptResponse->getBody()->getContents(), true);
+
+            if (($receiptBody['status'] ?? null) !== 'success') {
+                echo 'Error: Receipt rejected.';
+                exit;
+            } */
+
             //'totalCost' => $totalCost
 
             // -----------------------------------------------------
@@ -199,7 +241,8 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
 
             //echo htmlspecialchars("BOOKING COMPLETE! Customer name = $nameInput", ENT_QUOTES, 'UTF-8');
 
-
+            echo "BOOKING COMPLETE! Customer name = " .
+                htmlspecialchars($nameInput, ENT_QUOTES, 'UTF-8');
             //echo htmlspecialchars("BOOKING COMPLETE! Customer name = " . $nameInput, ENT_QUOTES, 'UTF-8');
             //echo htmlspecialchars("BOOKING COMPLETE! Customer name = $nameInput", ENT_QUOTES, 'UTF-8');
 
@@ -223,5 +266,5 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
     }
 }
 else{
-    echo "You need to fill the form completely. Tick 'No Activity' if you wish to only use a Hotel Room.";
+    echo "You need to fill the form completely.";
 }

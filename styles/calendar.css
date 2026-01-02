@@ -16,12 +16,6 @@
   border-radius: 6px;
   border: 1px solid #ddd;
   font-size: 0.9rem;
-  transition: background 0.2s, transform 0.1s;
-}
-
-.day:hover {
-  background: #eaeaea;
-  transform: scale(1.05);
 }
 
 /* Weekends */
@@ -37,8 +31,4 @@
   border-color: #7b4002;
   color: #b26229;
   font-weight: 600;
-}
-
-.booked:hover {
-    background: #d6caa5;
 }

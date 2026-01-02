@@ -24,6 +24,12 @@ declare(strict_types=1);
 $databaseLocation = "sqlite:".__DIR__.'/database.db';
 $database = new PDO($databaseLocation);
 
+//require(__DIR__ . '/../vendor/autoload.php');
+
+
+
+//echo $_ENV['API_KEY'];
+
 const ROOM_PRICES = [
     1 => 1.0, // ECONOMY
     2 => 2.0, // STANDARD
@@ -31,19 +37,17 @@ const ROOM_PRICES = [
 ];
 
 const ACTIVITY_PRICES = [
-    //NONE
-    1 => 0.0,
     //WATER
-    2 => 0.5,  // ECONOMY
+    1 => 0.5,  // ECONOMY
     //GAME  
-    3 => 1.25, // BASIC
+    2 => 1.25, // BASIC
     //WHEEL
-    4 => 2.5,  // PREMIUM
+    3 => 2.5,  // PREMIUM
     //DINO  
-    5 => 0.5,  // ECONOMY
-    6 => 1.25, // BASIC
-    7 => 2.5,  // PREMIUM
-    8 => 3.5,  // SUPERIOR
+    4 => 0.5,  // ECONOMY
+    5 => 1.25, // BASIC
+    6 => 2.5,  // PREMIUM
+    7 => 3.5,  // SUPERIOR
 ];
 
 //-------------------------------------------------------------------
@@ -116,5 +120,21 @@ function isRoomAvailable(
     $statement->bindValue(':departure', $departure, PDO::PARAM_STR);
     $statement->execute();
     return (int) $statement->fetchColumn() === 0;
+}
+
+//---------------------------------------------------------------
+
+function mapActivityIdToReceiptFormat(int $id): array
+{
+    return match ($id) {
+        1 => ['activity' => 'water', 'tier' => 'economy'],
+        2 => ['activity' => 'games', 'tier' => 'basic'],
+        3 => ['activity' => 'wheels', 'tier' => 'premium'],
+        4 => ['activity' => 'hotel-specific', 'tier' => 'economy'],
+        5 => ['activity' => 'hotel-specific', 'tier' => 'basic'],
+        6 => ['activity' => 'hotel-specific', 'tier' => 'premium'],
+        7 => ['activity' => 'hotel-specific', 'tier' => 'superior'],
+        default => throw new InvalidArgumentException('Invalid activity ID')
+    };
 }
 
