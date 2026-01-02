@@ -31,17 +31,19 @@ const ROOM_PRICES = [
 ];
 
 const ACTIVITY_PRICES = [
+    //NONE
+    1 => 0.0,
     //WATER
-    1 => 0.5,  // ECONOMY
+    2 => 0.5,  // ECONOMY
     //GAME  
-    2 => 1.25, // BASIC
+    3 => 1.25, // BASIC
     //WHEEL
-    3 => 2.5,  // PREMIUM
+    4 => 2.5,  // PREMIUM
     //DINO  
-    4 => 0.5,  // ECONOMY
-    5 => 1.25, // BASIC
-    6 => 2.5,  // PREMIUM
-    7 => 3.5,  // SUPERIOR
+    5 => 0.5,  // ECONOMY
+    6 => 1.25, // BASIC
+    7 => 2.5,  // PREMIUM
+    8 => 3.5,  // SUPERIOR
 ];
 
 //-------------------------------------------------------------------
@@ -59,7 +61,7 @@ function calculateNights(string $arrival, string $departure): int
 function calculateRoomCost(int $roomId, int $nights): float
 {
     if (!isset(ROOM_PRICES[$roomId])) {
-        throw new InvalidArgumentException('Invalid room type');
+        throw new InvalidArgumentException('Error: Invalid room type');
     }
 
     return ROOM_PRICES[$roomId] * $nights;
@@ -89,7 +91,7 @@ function calculateTotalPrice(
     $nights = calculateNights($arrival, $departure);
 
     if ($nights < 1) {
-        throw new InvalidArgumentException("Stay must be at least one night.");
+        throw new InvalidArgumentException("Error: Stay must be at least one night.");
     }
 
     $roomCost = calculateRoomCost($roomId, $nights);

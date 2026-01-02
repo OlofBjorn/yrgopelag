@@ -35,36 +35,39 @@ require __DIR__."/backend/functions.php";
             Attraction 1
         </p>
         <fieldset>
+            <legend>Activities:</legend>
+                <input type="checkbox" name="checkbox[]" id="noact" value=1 />
+                <label for="noact">No activity - No additional cost</label>
             <legend>Water Activities: Please select your tier</legend>
                 <div>
-                    <input type="checkbox" name="checkbox[]" label="cheapwater" value=1 />
+                    <input type="checkbox" name="checkbox[]" id="cheapwater" value=2 />
                     <label for="cheapwater">Pool - Cost: 0.5</label>
                 </div>
             <legend>Game Activities: Please select your tier</legend>
                 <div>
-                    <input type="checkbox" name="checkbox[]" label="mediumgame" value=2 />
+                    <input type="checkbox" name="checkbox[]" id="mediumgame" value=3 />
                     <label for="mediumgame">Ping Pong - Cost: 1.25</label>
                 </div>
             <legend>Wheel Activities: Please select your tier</legend>
                 <div>
-                    <input type="checkbox" name="checkbox[]" label="highwheel" value=3 />
+                    <input type="checkbox" name="checkbox[]" id="highwheel" value=4 />
                     <label for="highwheel">Trike - Cost: 2.5</label>
                 </div>
             <legend>Dinowatching: Please select your tier</legend>
                 <div>
-                    <input type="checkbox" name="checkbox[]" label="cheapdino" value=4 />
+                    <input type="checkbox" name="checkbox[]" id="cheapdino" value=5 />
                     <label for="cheapdino">Velociraptor Pen - Cost: 0.5</label>
                 </div>
                 <div>
-                    <input type="checkbox" name="checkbox[]" label="mediumdino" value=5 />
+                    <input type="checkbox" name="checkbox[]" id="mediumdino" value=6 />
                     <label for="mediumdino">Triceratops Field - Cost: 1.25</label>
                 </div>
                 <div>
-                    <input type="checkbox" name="checkbox[]" label="highdino" value=6 />
+                    <input type="checkbox" name="checkbox[]" id="highdino" value=7 />
                     <label for="highdino">T. rex Sightseeing - Cost: 2.5</label>
                 </div>
                 <div>
-                    <input type="checkbox" name="checkbox[]" label="superdino" value=7 />
+                    <input type="checkbox" name="checkbox[]" id="superdino" value=8 />
                     <label for="superdino">Brachiosaurus Safari - Cost: 3.5</label>
                 </div>
         </fieldset>
@@ -83,17 +86,19 @@ require __DIR__."/backend/functions.php";
         };
 
         const ACTIVITY_PRICES = {
+            //NONE
+            1: 0.0,
             //WATER
-            1: 0.5, 
+            2: 0.5, 
             //GAME  
-            2: 1.25, 
+            3: 1.25, 
             //WHEEL
-            3: 2.5,
+            4: 2.5,
             //DINO  
-            4: 0.5,
-            5: 1.25,
-            6: 2.5,
-            7: 3.5
+            5: 0.5,
+            6: 1.25,
+            7: 2.5,
+            8: 3.5
         };
 
         function calculateTotalPrice() {
