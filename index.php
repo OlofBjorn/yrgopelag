@@ -51,22 +51,22 @@ require __DIR__."/backend/functions.php";
                     <input type="checkbox" name="checkbox[]" id="highwheel" value=3 />
                     <label for="highwheel">Trike - Cost: 2.5</label>
                 </div>
-            <legend>Dinowatching: Please select your tier</legend>
+            <legend>Dinosaurs: Please select your tier</legend>
                 <div>
                     <input type="checkbox" name="checkbox[]" id="cheapdino" value=4 />
-                    <label for="cheapdino">Velociraptor Pen - Cost: 0.5</label>
+                    <label for="cheapdino">Souvenir digsite - Cost: 0.5</label>
                 </div>
                 <div>
                     <input type="checkbox" name="checkbox[]" id="mediumdino" value=5 />
-                    <label for="mediumdino">Triceratops Field - Cost: 1.25</label>
+                    <label for="mediumdino">Fossil museum - Cost: 1.25</label>
                 </div>
                 <div>
                     <input type="checkbox" name="checkbox[]" id="highdino" value=6 />
-                    <label for="highdino">T. rex Sightseeing - Cost: 2.5</label>
+                    <label for="highdino">Lifesize animatronic tour - Cost: 2.5</label>
                 </div>
                 <div>
                     <input type="checkbox" name="checkbox[]" id="superdino" value=7 />
-                    <label for="superdino">Brachiosaurus Safari - Cost: 3.5</label>
+                    <label for="superdino">Chickensaur exhibit - Cost: 3.5</label>
                 </div>
         </fieldset>
         <br>

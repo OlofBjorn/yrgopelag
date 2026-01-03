@@ -138,3 +138,30 @@ function mapActivityIdToReceiptFormat(int $id): array
     };
 }
 
+//-------------------------------------------------------------------
+
+function getBookedDaysForRoom(
+    PDO $database,
+    int $roomId,
+    string $month // format: YYYY-MM
+): array {
+    $query = "SELECT arrival, departure FROM visits WHERE room_id = :room_id";
+    $statement = $database->prepare($query);
+    $statement->execute([':room_id' => $roomId]);
+
+    $bookedDays = [];
+
+    foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $visit) {
+        $start = new DateTime($visit['arrival']);
+        $end   = new DateTime($visit['departure']);
+
+        while ($start < $end) {
+            if ($start->format('Y-m') === $month) {
+                $bookedDays[] = (int)$start->format('j');
+            }
+            $start->modify('+1 day');
+        }
+    }
+
+    return array_unique($bookedDays);
+}
