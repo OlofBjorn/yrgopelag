@@ -1,4 +1,7 @@
 <!DOCTYPE HTML>
     <head>
-        <h1> DINOSAUR HOTEL </h1>
+        <title> DINOSAUR HOTEL </title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="styles/main.css">
     </head>
+<body>

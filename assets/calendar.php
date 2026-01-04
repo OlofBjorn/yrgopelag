@@ -157,6 +157,8 @@ foreach ($rooms as $roomId => $domId) {
     $calendars[$domId] = getBookedDaysForRoom($database, $roomId, $month);
 }
 
+$leadingBlankDays = 4;
+
 ?>
 
 
@@ -166,7 +168,7 @@ foreach ($rooms as $roomId => $domId) {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/../styles/calendar.css">
+        <link rel="stylesheet" href="styles/calendar.css">
     </head>
 
     <body>
@@ -176,6 +178,11 @@ foreach ($rooms as $roomId => $domId) {
 
         <?php foreach ($calendars as $calendarId => $bookedDays): ?>
             <section class="calendar" id="<?= htmlspecialchars($calendarId) ?>">
+
+                <?php for ($i = 0; $i < $leadingBlankDays; $i++): ?>
+                    <div class="day empty"></div>
+                <?php endfor; ?>
+
                 <?php for ($day = 1; $day <= 31; $day++): ?>
                     <div class="day <?= in_array($day, $bookedDays, true) ? 'booked' : '' ?>">
                         <?= $day ?>

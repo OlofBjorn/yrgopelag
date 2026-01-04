@@ -1,0 +1,43 @@
+:root{
+    --bgcolour: rgb(214, 199, 153);
+    --textcolour: black;
+    --headercolour: rgb(183, 172, 135);
+    --framecolour: rgb(184, 179, 164);
+    --mainfont: "Modern No. 20";
+}
+
+
+*{
+    color: var(--textcolour);
+    font-family: var(--mainfont);
+}
+
+
+body{
+    margin:0%;
+    background-color: var(--bgcolour);
+}
+
+#titleContainer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--headercolour);
+    padding: 1rem 2rem;
+}
+
+.star{
+    width: 4rem;
+    height: auto;
+}
+
+#starContainer{
+    display:flex;
+    gap:0%;
+    margin:0%;
+    padding:0%;
+}
+
+#hotelTitle{
+    font-size: x-large;
+}

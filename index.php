@@ -8,9 +8,33 @@ require __DIR__."/backend/functions.php";
 //KOLLA PHP22 UPPGIFT 3 ASAP
 
 ?>
+    <div id="titleContainer">
+        <div id="hotelTitle">
+            <h1> DINOSAUR HOTEL </h1>
+        </div>
+        <div id="starContainer">
+            <img class= "star" src="images/ratedstar.png">
+            <img class= "star" src="images/unratedstar.png">
+            <img class= "star" src="images/unratedstar.png">
+            <img class= "star" src="images/unratedstar.png">
+            <img class= "star" src="images/unratedstar.png">
+        </div>
+    </div>
 
-<html>
-    <meta charset="UTF-8">
+    <p>
+        Fancy warm climates? Intrigued in what came before?
+        <br>
+        <br>
+        Dinosaur Hotel is a tropical resort with themes around dinosaurs, the great reptiles that once roamed the Earth. While we couldn’t achieve the heights of Spielberg’s Jurassic Park, we’ve done our best to make an unforgettable experience all about the world before the meteor came crashing down, and then some!
+    </p>
+
+    <div>
+        <?php
+        require_once __DIR__."/assets/calendar.php";
+        ?>
+    </div>
+
+
     <form action='backend/booking.php' method="post">
         <label for="nameInput">name</label>
         <input name="nameInput" id="nameInput" type="text" placeholder="name"/>
@@ -142,10 +166,10 @@ require __DIR__."/backend/functions.php";
 
         calculateTotalPrice();
     </script>
-</html>
+
 
 <?php
 
-require_once __DIR__."/assets/calendar.php";
+
 
 require_once __DIR__."/assets/footer.php";
