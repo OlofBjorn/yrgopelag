@@ -41,3 +41,20 @@ body{
 #hotelTitle{
     font-size: x-large;
 }
+
+.label{
+    background-color: var(--headercolour);
+    font-size: x-large;
+    padding:2.5rem;
+}
+
+#headimages{
+    display:flex;
+}
+
+.image{
+    width:20vw;
+    height:auto;
+    align-items: center;
+    justify-content: space-between;
+}

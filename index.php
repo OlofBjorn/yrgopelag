@@ -31,6 +31,11 @@ $activities = getAllActivities($database);
         </div>
     </div>
 
+    <div id="headImages">
+        <img src="images/building.png" alt="building" class="image">
+        <img src="images/spine.png" alt="building" class="image">
+    </div>
+
     <p>
         Fancy warm climates? Intrigued in what came before?
         <br>
@@ -38,6 +43,10 @@ $activities = getAllActivities($database);
         Dinosaur Hotel is a tropical resort with themes around dinosaurs, the great reptiles that once roamed the Earth. While we couldn’t achieve the heights of Spielberg’s Jurassic Park, we’ve done our best to make an unforgettable experience all about the world before the meteor came crashing down, and then some!
     </p>
 
+
+    <p id="roomLabel" class="label">
+        ROOMS
+    </p>
     <div>
         <?php foreach ($rooms as $room): ?>
             <section class="room">
@@ -48,7 +57,10 @@ $activities = getAllActivities($database);
             </section>
         <?php endforeach; ?>
     </div>
-
+    
+    <p id="calendarLabel" class="label">
+        AVAILABILITY
+    </p>
     <div>
         <?php
         require_once __DIR__."/assets/calendar.php";
@@ -59,7 +71,9 @@ $activities = getAllActivities($database);
     //var_dump($room);
     
     ?>
-
+    <p id="activityLabel" class="label">
+        ACTIVITIES
+    </p>
     <div class="activities">
         <?php foreach ($activities as $activity): ?>
             <section class="activity">
@@ -98,9 +112,6 @@ $activities = getAllActivities($database);
         <label for="departureInput">departure</label>
         <input name="departureInput" id="departureInput" type="date" placeholder="departure"  min="2026-01-01" max="2026-01-31"/>
 
-        <p>
-            Attraction 1
-        </p>
         <?php
         $activities = getAllActivities($database);
         $currentCategory = null;
