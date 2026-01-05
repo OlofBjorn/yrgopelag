@@ -27,7 +27,7 @@ error_log('Received nameInput: ' . $_POST['nameInput']);*/
 
 // CODE ONLY CHECKS IF SET, NOT IF EMPTY STRING
 //TODO: MAKE SURE ARRIVAL AND DEPARTURE HAVE AN ACTUAL VALUE AND THAT ARRIVAL MUST BE SMALLER THAN DEPARTURE
-if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST['departureInput'],$_POST['checkbox'])) {
+if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST['departureInput'],$_POST['activities'])) {
     //var_dump($_POST['nameInput']);
     //$nameInput = trim(htmlspecialchars($_POST['nameInput']));
     //$nameInput = trim(htmlspecialchars($_POST['nameInput'], ENT_QUOTES, 'UTF-8'));
@@ -38,7 +38,10 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
     $arrivalInput = trim($_POST['arrivalInput']);
     $departureInput = trim($_POST['departureInput']);
 
-    $checkboxes = ($_POST['checkbox']);
+    $activities = array_map(
+        'intval',
+        $_POST['activities'] ?? []
+    );
 
     //echo htmlspecialchars($nameInput, ENT_QUOTES, 'UTF-8');
 
@@ -88,9 +91,11 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
             var_dump($response->getBody()->getContents()); */
 
             //if(isset($_POST['checkbox'])){
-                $checkboxes = array_map(function($value) {
+/*
+                $activities = array_map(function($value) {
                 return trim($value, '/');  // Removes any leading or trailing slashes
-            }, $_POST['checkbox']);
+            }, $_POST['activity']);
+*/
             //}
             //else{
             //    $checkboxes = 1;
@@ -98,10 +103,11 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
 
             try {
                 $totalCost = calculateTotalPrice(
+                    $database,
                     (int) $roomInput,
                     $arrivalInput,
                     $departureInput,
-                    $checkboxes ?? []
+                    $activities ?? []
                 );
             } catch (Exception $e) {
                 echo htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
@@ -139,6 +145,7 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
 
 
             //echo $_ENV['API_KEY'];
+            echo "prereceipt";
 
             $receiptClient = new Client([
                 'base_uri' => 'https://www.yrgopelag.se/centralbank/',
@@ -155,10 +162,11 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
                         'guest_name' => $nameInput,
                         'arrival_date' => $arrivalInput,
                         'departure_date' => $departureInput,
-                        'features_used' => array_map(
+                        /*'features_used' => array_map(
                             fn ($activityId) => mapActivityIdToReceiptFormat((int)$activityId),
-                            $checkboxes
-                        ),
+                            $activities
+                        ),*/
+                        'features_used' => getActivitiesForReceipt($database, $activities),
                         'star_rating' => 1
                     ]
                 ]);
@@ -175,7 +183,7 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
                 exit;
             }
 
-            //var_dump($receiptBody);
+            var_dump($receiptBody);
             //exit;
 
             //'totalCost' => $totalCost
@@ -223,7 +231,7 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
 
             //var_dump($checkboxes);
 
-            foreach($checkboxes as $checkbox){
+            foreach($activities as $activity){
 
                 $query = 'INSERT INTO visit_activities (visit_id, activity_id) VALUES (:visit_id, :activity_id)'; 
 
@@ -231,7 +239,7 @@ if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST[
 
                 $statement->bindParam(':visit_id', $last_visit_id, PDO::PARAM_INT);
 
-                $statement->bindParam(':activity_id', $checkbox, PDO::PARAM_INT);
+                $statement->bindParam(':activity_id', $activity, PDO::PARAM_INT);
 
                 $statement->execute();
 

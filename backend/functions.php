@@ -21,8 +21,7 @@ foreach($activityPrices as $key => $value)
 
 declare(strict_types=1);
 
-$databaseLocation = "sqlite:".__DIR__.'/database.db';
-$database = new PDO($databaseLocation);
+require_once(__DIR__ . "/database.php");
 
 //require(__DIR__ . '/../vendor/autoload.php');
 
@@ -30,13 +29,73 @@ $database = new PDO($databaseLocation);
 
 //echo $_ENV['API_KEY'];
 
-const ROOM_PRICES = [
+function getAllRooms(PDO $database): array
+{
+    $statement = $database->query(
+        'SELECT id, class, description, image, price_per_night FROM rooms ORDER BY id'
+    );
+
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+
+//-----------------------------------------------------------
+
+function getAllActivities(PDO $database): array
+{
+    $stmt = $database->query(
+        'SELECT id, name, category, description, image, price
+         FROM activities
+         ORDER BY category, id'
+    );
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getActivityPrices(PDO $database): array
+{
+    $stmt = $database->query(
+        'SELECT id, price FROM activities'
+    );
+
+    return $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+}
+
+
+/*const ROOM_PRICES = [
     1 => 1.0, // ECONOMY
     2 => 2.0, // STANDARD
     3 => 4.0, // LUXURY
-];
+];*/
 
-const ACTIVITY_PRICES = [
+function getRoomPrices(PDO $database): array
+{
+    $rooms = getAllRooms($database);
+    $prices = [];
+    foreach ($rooms as $room) {
+        if (is_array($room) && isset($room['id'], $room['price_per_night'])) {
+            $prices[(int)$room['id']] = (float)$room['price_per_night'];
+        }
+    }
+    return $prices;
+}
+
+function getRoomPrice(PDO $database, int $roomId): float
+{
+    $stmt = $database->prepare(
+        'SELECT price_per_night FROM rooms WHERE id = :id'
+    );
+    $stmt->execute([':id' => $roomId]);
+
+    $price = $stmt->fetchColumn();
+
+    if ($price === false) {
+        throw new InvalidArgumentException('Invalid room ID');
+    }
+
+    return (float) $price;
+}
+
+/*const ACTIVITY_PRICES = [
     //WATER
     1 => 0.5,  // ECONOMY
     //GAME  
@@ -48,7 +107,7 @@ const ACTIVITY_PRICES = [
     5 => 1.25, // BASIC
     6 => 2.5,  // PREMIUM
     7 => 3.5,  // SUPERIOR
-];
+];*/
 
 //-------------------------------------------------------------------
 
@@ -62,16 +121,20 @@ function calculateNights(string $arrival, string $departure): int
 
 //-----------------------------------------------------------------
 
-function calculateRoomCost(int $roomId, int $nights): float
+/*function calculateRoomCost(int $roomId, int $nights): float
 {
     if (!isset(ROOM_PRICES[$roomId])) {
         throw new InvalidArgumentException('Error: Invalid room type');
     }
 
     return ROOM_PRICES[$roomId] * $nights;
+}*/
+
+function calculateRoomCostPHP(array $roomPrices, int $roomId, int $nights): float {
+    return $roomPrices[$roomId] ?? throw new InvalidArgumentException('Invalid room ID');
 }
 
-function calculateActivityCost(array $activities): float
+/*function calculateActivityCost(array $activities): float
 {
     $priceSum = 0.0;
 
@@ -82,11 +145,29 @@ function calculateActivityCost(array $activities): float
     }
 
     return $priceSum;
+}*/
+
+function calculateActivityCost(PDO $database, array $activities): float
+{
+    if (empty($activities)) {
+        return 0.0;
+    }
+
+    $placeholders = implode(',', array_fill(0, count($activities), '?'));
+
+    $stmt = $database->prepare(
+        "SELECT SUM(price) FROM activities WHERE id IN ($placeholders)"
+    );
+
+    $stmt->execute(array_map('intval', $activities));
+
+    return (float) $stmt->fetchColumn();
 }
 
 // -------------------------------------------------------
 
 function calculateTotalPrice(
+    PDO $database,
     int $roomId,
     string $arrival,
     string $departure,
@@ -98,8 +179,8 @@ function calculateTotalPrice(
         throw new InvalidArgumentException("Error: Stay must be at least one night.");
     }
 
-    $roomCost = calculateRoomCost($roomId, $nights);
-    $activityCost = calculateActivityCost($activities);
+    $roomCost = getRoomPrice($database, $roomId) * $nights;
+    $activityCost = calculateActivityCost($database, $activities);
 
     return $roomCost + $activityCost;
 }
@@ -124,7 +205,7 @@ function isRoomAvailable(
 
 //---------------------------------------------------------------
 
-function mapActivityIdToReceiptFormat(int $id): array
+/*function mapActivityIdToReceiptFormat(int $id): array
 {
     return match ($id) {
         1 => ['activity' => 'water', 'tier' => 'economy'],
@@ -136,7 +217,44 @@ function mapActivityIdToReceiptFormat(int $id): array
         7 => ['activity' => 'hotel-specific', 'tier' => 'superior'],
         default => throw new InvalidArgumentException('Invalid activity ID')
     };
+}*/
+
+/*foreach($activities as $activity){
+    $query = 'INSERT INTO visit_activities (visit_id, activity_id) VALUES (:visit_id, :activity_id)'; 
+    $statement = $database->prepare($query);
+    $statement->bindParam(':visit_id', $last_visit_id, PDO::PARAM_INT);
+    $statement->bindParam(':activity_id', $activity, PDO::PARAM_INT);
+    $statement->execute();
+}*/
+
+function getActivitiesForReceipt(PDO $database, array $activityIds): array
+{
+    if (empty($activityIds)) return [];
+
+    $placeholders = implode(',', array_fill(0, count($activityIds), '?'));
+    $statement = $database->prepare(
+        "SELECT id, name, category, tier, price FROM activities WHERE id IN ($placeholders)"
+    );
+    $statement->execute($activityIds);
+
+    $tierMap = [
+    1 => 'economy',
+    2 => 'basic',
+    3 => 'premium',
+    4 => 'superior'
+    ];
+
+    $activities = [];
+    foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $row) {
+        $activities[] = [
+            'activity' => strtolower($row['category']),
+            'tier' => $tierMap[(int)$row['tier']] ?? 'unknown'
+        ];
+    }
+
+    return $activities;
 }
+
 
 //-------------------------------------------------------------------
 

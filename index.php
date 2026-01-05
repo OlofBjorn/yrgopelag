@@ -3,9 +3,13 @@ declare(strict_types=1);
 
 require_once __DIR__."/assets/header.php";
 
-require __DIR__."/backend/functions.php";
+require_once __DIR__."/backend/functions.php";
 
 //KOLLA PHP22 UPPGIFT 3 ASAP
+
+$rooms = getAllRooms($database);
+$activities = getAllActivities($database);
+
 
 ?>
     <div id="titleContainer">
@@ -13,11 +17,17 @@ require __DIR__."/backend/functions.php";
             <h1> DINOSAUR HOTEL </h1>
         </div>
         <div id="starContainer">
-            <img class= "star" src="images/ratedstar.png">
-            <img class= "star" src="images/unratedstar.png">
-            <img class= "star" src="images/unratedstar.png">
-            <img class= "star" src="images/unratedstar.png">
-            <img class= "star" src="images/unratedstar.png">
+            <?php
+            $rating = 1;      
+            $maxStars = 5;
+
+            for ($i = 1; $i <= $maxStars; $i++):
+                $star = $i <= $rating
+                    ? 'images/ratedstar.png'
+                    : 'images/unratedstar.png';
+            ?>
+                <img class="star" src="<?= $star ?>" alt="">
+            <?php endfor; ?>
         </div>
     </div>
 
@@ -29,11 +39,40 @@ require __DIR__."/backend/functions.php";
     </p>
 
     <div>
+        <?php foreach ($rooms as $room): ?>
+            <section class="room">
+                <img src="images/<?= htmlspecialchars($room['image']) ?>" alt="">
+                <h2><?= htmlspecialchars($room['class']) ?></h2>
+                <p>Price per night: $<?= number_format($room['price_per_night'], 2) ?></p>
+                <p><?= htmlspecialchars($room['description']) ?></p>
+            </section>
+        <?php endforeach; ?>
+    </div>
+
+    <div>
         <?php
         require_once __DIR__."/assets/calendar.php";
         ?>
     </div>
 
+    <?php
+    //var_dump($room);
+    
+    ?>
+
+    <div class="activities">
+        <?php foreach ($activities as $activity): ?>
+            <section class="activity">
+                <img
+                    src="images/<?= htmlspecialchars($activity['image']) ?>"
+                    alt="<?= htmlspecialchars($activity['name']) ?>"
+                >
+                <h3><?= htmlspecialchars($activity['name']) ?></h3>
+                <p><?= htmlspecialchars($activity['description']) ?></p>
+                <p>Price: $<?= number_format((float)$activity['price'], 2) ?></p>
+            </section>
+        <?php endforeach; ?>
+    </div>
 
     <form action='backend/booking.php' method="post">
         <label for="nameInput">name</label>
@@ -43,10 +82,14 @@ require __DIR__."/backend/functions.php";
         <input name="codeInput" id="codeInput" type="password" placeholder="code"/>
 
         <label for="roomInput">room</label>
-        <select name="roomInput" id="roomInput" type="text" placeholder="room">
-            <option value="1">Economy</option>
-            <option value="2">Standard</option>
-            <option value="3">Luxury</option>
+        <select name="roomInput" id="roomInput" required>
+            <option value="" disabled selected>Choose a room</option>
+            <?php foreach ($rooms as $room): ?>
+                <option value="<?= (int)$room['id'] ?>">
+                    <?= htmlspecialchars($room['class'], ENT_QUOTES, 'UTF-8') ?>
+                    ($<?= number_format((float)$room['price_per_night'], 2) ?>/night)
+                </option>
+            <?php endforeach; ?>
         </select>
 
         <label for="arrivalInput">arrival</label>
@@ -58,40 +101,33 @@ require __DIR__."/backend/functions.php";
         <p>
             Attraction 1
         </p>
+        <?php
+        $activities = getAllActivities($database);
+        $currentCategory = null;
+        ?>
+
         <fieldset>
-            <legend>Activities:</legend>
-            <legend>Water Activities: Please select your tier</legend>
+            <legend>Activities</legend>
+
+            <?php foreach ($activities as $activity): ?>
+                <?php if ($activity['category'] !== $currentCategory): ?>
+                    <?php $currentCategory = $activity['category']; ?>
+                    <p><?= htmlspecialchars($currentCategory) ?> Activities</p>
+                <?php endif; ?>
+
                 <div>
-                    <input type="checkbox" name="checkbox[]" id="cheapwater" value=1 />
-                    <label for="cheapwater">Pool - Cost: 0.5</label>
+                    <input
+                        type="checkbox"
+                        name="activities[]"
+                        id="activity<?= (int)$activity['id'] ?>"
+                        value="<?= (int)$activity['id'] ?>"
+                    >
+                    <label for="activity<?= (int)$activity['id'] ?>">
+                        <?= htmlspecialchars($activity['name']) ?>
+                        ($<?= number_format((float)$activity['price'], 2) ?>)
+                    </label>
                 </div>
-            <legend>Game Activities: Please select your tier</legend>
-                <div>
-                    <input type="checkbox" name="checkbox[]" id="mediumgame" value=2 />
-                    <label for="mediumgame">Ping Pong - Cost: 1.25</label>
-                </div>
-            <legend>Wheel Activities: Please select your tier</legend>
-                <div>
-                    <input type="checkbox" name="checkbox[]" id="highwheel" value=3 />
-                    <label for="highwheel">Trike - Cost: 2.5</label>
-                </div>
-            <legend>Dinosaurs: Please select your tier</legend>
-                <div>
-                    <input type="checkbox" name="checkbox[]" id="cheapdino" value=4 />
-                    <label for="cheapdino">Souvenir digsite - Cost: 0.5</label>
-                </div>
-                <div>
-                    <input type="checkbox" name="checkbox[]" id="mediumdino" value=5 />
-                    <label for="mediumdino">Fossil museum - Cost: 1.25</label>
-                </div>
-                <div>
-                    <input type="checkbox" name="checkbox[]" id="highdino" value=6 />
-                    <label for="highdino">Lifesize animatronic tour - Cost: 2.5</label>
-                </div>
-                <div>
-                    <input type="checkbox" name="checkbox[]" id="superdino" value=7 />
-                    <label for="superdino">Chickensaur exhibit - Cost: 3.5</label>
-                </div>
+            <?php endforeach; ?>
         </fieldset>
         <br>
 
@@ -99,27 +135,18 @@ require __DIR__."/backend/functions.php";
 
         <input type="submit" value="submit"/>
     </form>
-        <script>
 
-        const ROOM_PRICES = {
-            1: 1.0, // Economy
-            2: 2.0, // Standard
-            3: 4.0  // Luxury
-        };
+    <?php 
+    $roomPrices = getRoomPrices($database); 
+    $activityPrices = getActivityPrices($database);
+    ?>  
 
-        const ACTIVITY_PRICES = {
-            //WATER
-            1: 0.5, 
-            //GAME  
-            2: 1.25, 
-            //WHEEL
-            3: 2.5,
-            //DINO  
-            4: 0.5,
-            5: 1.25,
-            6: 2.5,
-            7: 3.5
-        };
+    <script>
+        
+        
+        const ROOM_PRICES = <?= json_encode($roomPrices, JSON_THROW_ON_ERROR) ?>;
+
+        const ACTIVITY_PRICES = <?= json_encode($activityPrices, JSON_THROW_ON_ERROR) ?>;
 
         function calculateTotalPrice() {
             const roomInput = document.getElementById('roomInput').value;
@@ -131,8 +158,8 @@ require __DIR__."/backend/functions.php";
             const nights = calculateNights(arrivalInput, departureInput);
             const roomCost = calculateRoomCost(roomInput, nights);
 
-            const selectedActivities = Array.from(document.querySelectorAll('input[name="checkbox[]"]:checked'))
-                .map(checkbox => parseInt(checkbox.value));
+            const selectedActivities = Array.from(document.querySelectorAll('input[name="activities[]"]:checked'))
+                .map(activity => parseInt(activity.value));
 
             const activityCost = calculateActivityCost(selectedActivities);
 
@@ -160,8 +187,8 @@ require __DIR__."/backend/functions.php";
         document.getElementById('roomInput').addEventListener('change', calculateTotalPrice);
         document.getElementById('arrivalInput').addEventListener('change', calculateTotalPrice);
         document.getElementById('departureInput').addEventListener('change', calculateTotalPrice);
-        document.querySelectorAll('input[name="checkbox[]"]').forEach(checkbox => {
-            checkbox.addEventListener('change', calculateTotalPrice);
+        document.querySelectorAll('input[name="activities[]"]').forEach(activity => {
+            activity.addEventListener('change', calculateTotalPrice);
         });
 
         calculateTotalPrice();
