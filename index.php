@@ -43,39 +43,11 @@ $activities = getAllActivities($database);
         Dinosaur Hotel is a tropical resort with themes around dinosaurs, the great reptiles that once roamed the Earth. While we couldn’t achieve the heights of Spielberg’s Jurassic Park, we’ve done our best to make an unforgettable experience all about the world before the meteor came crashing down, and then some!
     </p>
 
-
-    <p id="roomLabel" class="label">
-        ROOMS
-    </p>
-    <div>
-        <?php foreach ($rooms as $room): ?>
-            <section class="room">
-                <img src="images/<?= htmlspecialchars($room['image']) ?>" alt="">
-                <h2><?= htmlspecialchars($room['class']) ?></h2>
-                <p>Price per night: $<?= number_format($room['price_per_night'], 2) ?></p>
-                <p><?= htmlspecialchars($room['description']) ?></p>
-            </section>
-        <?php endforeach; ?>
-    </div>
-    
-    <p id="calendarLabel" class="label">
-        AVAILABILITY
-    </p>
-    <div>
-        <?php
-        require_once __DIR__."/assets/calendar.php";
-        ?>
-    </div>
-
-    <?php
-    //var_dump($room);
-    
-    ?>
     <p id="activityLabel" class="label">
         ACTIVITIES
     </p>
     <div class="activities">
-        <?php foreach ($activities as $activity): ?>
+       <?php foreach ($activities as $activity): ?>
             <section class="activity">
                 <img
                     src="images/<?= htmlspecialchars($activity['image']) ?>"
@@ -88,64 +60,95 @@ $activities = getAllActivities($database);
         <?php endforeach; ?>
     </div>
 
-    <form action='backend/booking.php' method="post">
-        <label for="nameInput">name</label>
-        <input name="nameInput" id="nameInput" type="text" placeholder="name"/>
+    <div id="roomsAndBooking">
+        <div id="submissionForm">
+            <form action='backend/booking.php' method="post">
+                <label for="nameInput">name</label>
+                <input name="nameInput" id="nameInput" type="text" placeholder="name"/>
 
-        <label for="codeInput">transferCode</label>
-        <input name="codeInput" id="codeInput" type="password" placeholder="code"/>
+                <label for="codeInput">transferCode</label>
+                <input name="codeInput" id="codeInput" type="password" placeholder="code"/>
 
-        <label for="roomInput">room</label>
-        <select name="roomInput" id="roomInput" required>
-            <option value="" disabled selected>Choose a room</option>
-            <?php foreach ($rooms as $room): ?>
-                <option value="<?= (int)$room['id'] ?>">
-                    <?= htmlspecialchars($room['class'], ENT_QUOTES, 'UTF-8') ?>
-                    ($<?= number_format((float)$room['price_per_night'], 2) ?>/night)
-                </option>
-            <?php endforeach; ?>
-        </select>
+                <label for="roomInput">room</label>
+                <select name="roomInput" id="roomInput" required>
+                    <option value="" disabled selected>Choose a room</option>
+                    <?php foreach ($rooms as $room): ?>
+                        <option value="<?= (int)$room['id'] ?>">
+                            <?= htmlspecialchars($room['class'], ENT_QUOTES, 'UTF-8') ?>
+                            ($<?= number_format((float)$room['price_per_night'], 2) ?>/night)
+                        </option>
+                    <?php endforeach; ?>
+                </select>
 
-        <label for="arrivalInput">arrival</label>
-        <input name="arrivalInput" id="arrivalInput" type="date" placeholder="arrival"  min="2026-01-01" max="2026-01-31"/>
+                <label for="arrivalInput">arrival</label>
+                <input name="arrivalInput" id="arrivalInput" type="date" placeholder="arrival"  min="2026-01-01" max="2026-01-31"/>
 
-        <label for="departureInput">departure</label>
-        <input name="departureInput" id="departureInput" type="date" placeholder="departure"  min="2026-01-01" max="2026-01-31"/>
+                <label for="departureInput">departure</label>
+                <input name="departureInput" id="departureInput" type="date" placeholder="departure"  min="2026-01-01" max="2026-01-31"/>
 
-        <?php
-        $activities = getAllActivities($database);
-        $currentCategory = null;
-        ?>
+                <?php
+                $activities = getAllActivities($database);
+                $currentCategory = null;
+                ?>
 
-        <fieldset>
-            <legend>Activities</legend>
+                <fieldset>
+                    <legend>Activities</legend>
 
-            <?php foreach ($activities as $activity): ?>
-                <?php if ($activity['category'] !== $currentCategory): ?>
-                    <?php $currentCategory = $activity['category']; ?>
-                    <p><?= htmlspecialchars($currentCategory) ?> Activities</p>
-                <?php endif; ?>
+                    <?php foreach ($activities as $activity): ?>
+                        <?php if ($activity['category'] !== $currentCategory): ?>
+                            <?php $currentCategory = $activity['category']; ?>
+                            <p><?= htmlspecialchars($currentCategory) ?> Activities</p>
+                        <?php endif; ?>
 
-                <div>
-                    <input
-                        type="checkbox"
-                        name="activities[]"
-                        id="activity<?= (int)$activity['id'] ?>"
-                        value="<?= (int)$activity['id'] ?>"
-                    >
-                    <label for="activity<?= (int)$activity['id'] ?>">
-                        <?= htmlspecialchars($activity['name']) ?>
-                        ($<?= number_format((float)$activity['price'], 2) ?>)
-                    </label>
-                </div>
-            <?php endforeach; ?>
-        </fieldset>
-        <br>
+                        <div>
+                            <input
+                                type="checkbox"
+                                name="activities[]"
+                                id="activity<?= (int)$activity['id'] ?>"
+                                value="<?= (int)$activity['id'] ?>"
+                            >
+                            <label for="activity<?= (int)$activity['id'] ?>">
+                                <?= htmlspecialchars($activity['name']) ?>
+                                ($<?= number_format((float)$activity['price'], 2) ?>)
+                            </label>
+                        </div>
+                    <?php endforeach; ?>
+                </fieldset>
+                <br>
 
-         <div id="priceDisplay">Current price: $0</div>
+                <div id="priceDisplay">Current price: $0</div>
 
-        <input type="submit" value="submit"/>
-    </form>
+                <input type="submit" value="submit"/>
+            </form>
+        </div>
+        <div id="roomDisplay">
+            <div id="roomDisplayLabels">
+                <p id="roomLabel" class="label">ROOMS</p>
+                <p id="calendarLabel" class="label">AVAILABILITY</p>
+            </div>
+
+            <div id="roomsAndCalendars">
+                <?php foreach ($rooms as $room): ?>
+                    <div class="roomRow">
+                        <section class="room">
+                            <img src="images/<?= htmlspecialchars($room['image']) ?>"
+                                class="roomImage">
+                            <h2 class="roomLabel"><?= htmlspecialchars($room['class']) ?></h2>
+                            <p class="roomText">
+                                Price per night: $<?= number_format($room['price_per_night'], 2) ?>
+                            </p>
+                            <p class="roomText"><?= htmlspecialchars($room['description']) ?></p>
+                        </section>
+
+                        <?php 
+                            $roomId = (int)$room['id'];
+                            require __DIR__ . "/assets/calendar.php"; 
+                        ?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
 
     <?php 
     $roomPrices = getRoomPrices($database); 

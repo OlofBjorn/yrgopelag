@@ -1,11 +1,15 @@
 .calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  max-width: 280px;
-  margin: 1rem auto;
+  width: 280px;
+  margin: 5rem auto;
   font-family: system-ui, sans-serif;
   flex: 1;
+  margin-top: 1rem;
+  margin-bottom:10rem;
 }
+
+
 
 .day {
   aspect-ratio: 1 / 1;
@@ -30,9 +34,4 @@
   border-color: #7b4002;
   color: #b26229;
   font-weight: 600;
-}
-
-.calendarContainer {
-  display:flex;
-  gap:1rem;
 }

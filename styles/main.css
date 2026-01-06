@@ -46,6 +46,7 @@ body{
     background-color: var(--headercolour);
     font-size: x-large;
     padding:2.5rem;
+    width: 40vw;
 }
 
 #headimages{
@@ -57,4 +58,71 @@ body{
     height:auto;
     align-items: center;
     justify-content: space-between;
+}
+
+#roomDisplay{
+    display:grid;
+    grid-row-start: auto;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: auto;
+    column-gap: 5rem;
+    grid-template-areas: 
+    "roomDisplayLabels"
+    "roomsAndCalendars";
+    padding:5rem;
+    width:40vw;
+}
+
+.room{
+    background-color: var(--framecolour);
+    height:auto;
+    width:auto;
+}
+
+#roomList{
+    align-items: center;
+}
+
+.roomImage {
+    max-width: 280px;
+    display: block;
+    margin: 1rem auto;
+}
+
+.roomRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 5rem;
+    align-items: start;
+}
+
+#roomDisplayLabels{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.roomText{
+    padding-left:1rem;
+    padding-right:1rem;
+}
+
+.roomLabel{
+    padding-left:1rem;
+    padding-right:1rem;
+}
+
+#roomsAndBooking{
+    display:grid;
+    grid-row-start: auto;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    column-gap: 5rem;
+    grid-template-areas: 
+    "submissionForm roomDisplay";
+    padding:5rem;
+}
+
+#submissionform{
+    width:40vw;
 }
