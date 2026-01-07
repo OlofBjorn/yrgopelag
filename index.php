@@ -12,6 +12,7 @@ $activities = getAllActivities($database);
 
 
 ?>
+<div id="contentWrapper">
     <div id="titleContainer">
         <div id="hotelTitle">
             <h1> DINOSAUR HOTEL </h1>
@@ -149,6 +150,7 @@ $activities = getAllActivities($database);
             </div>
         </div>
     </div>
+</div>
 
     <?php 
     $roomPrices = getRoomPrices($database); 

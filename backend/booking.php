@@ -27,7 +27,7 @@ error_log('Received nameInput: ' . $_POST['nameInput']);*/
 
 // CODE ONLY CHECKS IF SET, NOT IF EMPTY STRING
 //TODO: MAKE SURE ARRIVAL AND DEPARTURE HAVE AN ACTUAL VALUE AND THAT ARRIVAL MUST BE SMALLER THAN DEPARTURE
-if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST['departureInput'],$_POST['activities'])) {
+if (isset($_POST['nameInput'],$_POST['roomInput'],$_POST['arrivalInput'],$_POST['departureInput'])) {
     //var_dump($_POST['nameInput']);
     //$nameInput = trim(htmlspecialchars($_POST['nameInput']));
     //$nameInput = trim(htmlspecialchars($_POST['nameInput'], ENT_QUOTES, 'UTF-8'));

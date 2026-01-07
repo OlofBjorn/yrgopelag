@@ -13,6 +13,10 @@
 }
 
 
+#contentWrapper{
+    width:100vw;
+}
+
 body{
     margin:0%;
     background-color: var(--bgcolour);
@@ -54,10 +58,12 @@ body{
 }
 
 .image{
-    width:20vw;
+    width:35vw;
     height:auto;
     align-items: center;
     justify-content: space-between;
+    margin-left: 7.5vw;
+    margin-right: 7.5vw;
 }
 
 #roomDisplay{
@@ -77,6 +83,7 @@ body{
     background-color: var(--framecolour);
     height:auto;
     width:auto;
+    padding:1rem;
 }
 
 #roomList{
@@ -94,6 +101,7 @@ body{
     grid-template-columns: 1fr 1fr;
     column-gap: 5rem;
     align-items: start;
+    margin:1rem;
 }
 
 #roomDisplayLabels{
@@ -123,6 +131,26 @@ body{
     padding:5rem;
 }
 
+#roomsAndCalendars{
+    width:20vw;
+}
+
+#roomDisplayLabels{
+    width:40vw;
+}
+
 #submissionform{
     width:40vw;
+}
+
+#headImages{
+    display:flex;
+    justify-content: center;
+    margin:5rem auto;
+}
+
+.footerText{
+    background-color: var(--headercolour);
+    padding: 1rem 2rem;
+    font-size:x-large;
 }
