@@ -1,14 +1,12 @@
-
-
+/*---MAIN---*/
 
 *{
     color: var(--textcolour);
     font-family: var(--mainfont);
 }
 
-
 #contentWrapper{
-    width:95vw;
+    width:95%;
     padding:2vw;
 }
 
@@ -16,6 +14,31 @@ body{
     margin:0%;
     background-color: var(--bgcolour);
 }
+
+
+.label{
+    background-color: var(--headercolour);
+    font-size: x-large;
+    padding:2.5rem;
+}
+
+#headImages{
+    display:flex;
+    justify-content: center;
+    margin:5rem auto;
+}
+
+.image{
+    width:35vw;
+    height:auto;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 7.5vw;
+    margin-right: 7.5vw;
+}
+
+
+/*---HEADER/FOOTER---*/
 
 #titleContainer{
     display: flex;
@@ -41,28 +64,34 @@ body{
     font-size: x-large;
 }
 
-.label{
+
+.footerText{
     background-color: var(--headercolour);
-    font-size: x-large;
-    padding:2.5rem;
+    padding: 1rem 2rem;
+    font-size:x-large;
+    flex:1;
 }
+
+/*---ACTIVITIES---*/
 
 #activityLabel{
     width:95%;
 }
 
-#headimages{
-    display:flex;
+.activities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-left:auto;
+    margin-right:auto;
+}
+.activity{
+    padding:2.5rem;
+    background-color: var(--framecolour);
+    width: 425px;
 }
 
-.image{
-    width:35vw;
-    height:auto;
-    align-items: center;
-    justify-content: space-between;
-    margin-left: 7.5vw;
-    margin-right: 7.5vw;
-}
+/*---ROOMS---*/
 
 #roomDisplay{
     padding-top:0rem;
@@ -88,7 +117,6 @@ body{
 
 .roomRow {
     align-items: start;
-    margin:1rem;
 }
 
 #roomDisplayLabels{
@@ -107,14 +135,10 @@ body{
     padding-right:1rem;
 }
 
-#roomsAndBooking{
-    padding:5rem;
-    padding-top:0rem;
-}
-
 #roomsAndCalendars{
     display:flex;
     justify-content:space-between;
+    flex-wrap: wrap;
 }
 
 #roomDisplayLabels{
@@ -125,34 +149,29 @@ body{
     width:95%;
 }
 
+/*---SUBMISSION FORM---*/
+
+#submissionContainer{
+    padding:5rem;
+    padding-top:0rem;
+}
+
 #submissionform{
     width:40vw;
 }
 
-#headImages{
+#activityBookingField{
+    background-color: var(--framecolour);
     display:flex;
-    justify-content: center;
-    margin:5rem auto;
+    justify-content: space-between;
 }
 
-.footerText{
-    background-color: var(--headercolour);
-    padding: 1rem 2rem;
-    font-size:x-large;
-    flex:1;
+#submissionFields{
+    display:flex;
+    justify-content: space-between;
 }
 
-.activities {
+.activityCheckboxLoop{
     display: flex;
     flex-wrap: wrap;
-    gap: 2rem;
-    margin-left:auto;
-    margin-right:auto;
 }
-.activity{
-    padding:2.5rem;
-    background-color: var(--framecolour);
-    width: 425px;
-}
-
-

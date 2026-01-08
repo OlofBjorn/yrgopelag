@@ -5,8 +5,6 @@ require_once __DIR__."/assets/header.php";
 
 require_once __DIR__."/backend/functions.php";
 
-//KOLLA PHP22 UPPGIFT 3 ASAP
-
 $rooms = getAllRooms($database);
 $activities = getAllActivities($database);
 
@@ -88,60 +86,97 @@ $activities = getAllActivities($database);
             </div>
         </div>
 
-    <div id="roomsAndBooking">
+    <div id="submissionContainer">
         
         <div id="submissionForm">
             <form action='backend/booking.php' method="post">
-                <label for="nameInput">name</label>
-                <input name="nameInput" id="nameInput" type="text" placeholder="name"/>
-
-                <label for="codeInput">transferCode</label>
-                <input name="codeInput" id="codeInput" type="password" placeholder="code"/>
-
-                <label for="roomInput">room</label>
-                <select name="roomInput" id="roomInput" required>
-                    <option value="" disabled selected>Choose a room</option>
-                    <?php foreach ($rooms as $room): ?>
-                        <option value="<?= (int)$room['id'] ?>">
-                            <?= htmlspecialchars($room['class'], ENT_QUOTES, 'UTF-8') ?>
-                            ($<?= number_format((float)$room['price_per_night'], 2) ?>/night)
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-
-                <label for="arrivalInput">arrival</label>
-                <input name="arrivalInput" id="arrivalInput" type="date" placeholder="arrival"  min="2026-01-01" max="2026-01-31"/>
-
-                <label for="departureInput">departure</label>
-                <input name="departureInput" id="departureInput" type="date" placeholder="departure"  min="2026-01-01" max="2026-01-31"/>
-
+                <div id="submissionFields">
+                    <div class="formInputAndLabel">
+                        <label for="nameInput">Name</label>
+                        <input name="nameInput" 
+                                id="nameInput" 
+                                type="text" 
+                                placeholder="name" 
+                                class="formInput"
+                        />
+                    </div>
+                    <div class="formInputAndLabel">
+                        <label for="codeInput">TransferCode</label>
+                        <input name="codeInput" 
+                                id="codeInput" 
+                                type="password" 
+                                placeholder="code" 
+                                class="formInput"
+                        />
+                    </div>
+                    <div class="formInputAndLabel">
+                        <label for="roomInput">Room</label>
+                        <select name="roomInput" 
+                                id="roomInput" 
+                                class="formInput" 
+                                required 
+                                >
+                            <option value="" disabled selected>Choose a room</option>
+                            <?php foreach ($rooms as $room): ?>
+                                <option value="<?= (int)$room['id'] ?>">
+                                    <?= htmlspecialchars($room['class'], ENT_QUOTES, 'UTF-8') ?>
+                                    ($<?= number_format((float)$room['price_per_night'], 2) ?>/night)
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="formInputAndLabel">
+                        <label for="arrivalInput">Arrival</label>
+                        <input name="arrivalInput" 
+                                id="arrivalInput" 
+                                type="date" 
+                                placeholder="arrival"  
+                                min="2026-01-01" 
+                                max="2026-01-31" 
+                                class="formInput"
+                        />
+                    </div>
+                    <div class="formInputAndLabel">
+                        <label for="departureInput">Departure</label>
+                        <input name="departureInput" 
+                                id="departureInput" 
+                                type="date" 
+                                placeholder="departure"  
+                                min="2026-01-01" 
+                                max="2026-01-31" 
+                                class="formInput"
+                        />
+                    </div>
+                </div>
                 <?php
                 $activities = getAllActivities($database);
                 $currentCategory = null;
                 ?>
 
-                <fieldset>
+                <fieldset id="activityBookingField">
                     <legend>Activities</legend>
+                        <div id="activityCheckboxLoop">
 
-                    <?php foreach ($activities as $activity): ?>
-                        <?php if ($activity['category'] !== $currentCategory): ?>
-                            <?php $currentCategory = $activity['category']; ?>
-                            <p><?= htmlspecialchars($currentCategory) ?> Activities</p>
-                        <?php endif; ?>
+                        <?php foreach ($activities as $activity): ?>
+                            <?php if ($activity['category'] !== $currentCategory): ?>
+                                <?php $currentCategory = $activity['category']; ?>
+                                <p><?= htmlspecialchars($currentCategory) ?> Activities</p>
+                            <?php endif; ?>
 
-                        <div>
-                            <input
-                                type="checkbox"
-                                name="activities[]"
-                                id="activity<?= (int)$activity['id'] ?>"
-                                value="<?= (int)$activity['id'] ?>"
-                            >
-                            <label for="activity<?= (int)$activity['id'] ?>">
-                                <?= htmlspecialchars($activity['name']) ?>
-                                ($<?= number_format((float)$activity['price'], 2) ?>)
-                            </label>
-                        </div>
-                    <?php endforeach; ?>
+                            <div class="activityCheckbox">
+                                <input
+                                    type="checkbox"
+                                    name="activities[]"
+                                    id="activity<?= (int)$activity['id'] ?>"
+                                    value="<?= (int)$activity['id'] ?>"
+                                >
+                                <label for="activity<?= (int)$activity['id'] ?>">
+                                    <?= htmlspecialchars($activity['name']) ?>
+                                    ($<?= number_format((float)$activity['price'], 2) ?>)
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
                 </fieldset>
                 <br>
 
@@ -166,6 +201,8 @@ $activities = getAllActivities($database);
 
         const ACTIVITY_PRICES = <?= json_encode($activityPrices, JSON_THROW_ON_ERROR) ?>;
 
+        //----------------------------------------------------------------
+
         function calculateTotalPrice() {
             const roomInput = document.getElementById('roomInput').value;
             const arrivalInput = document.getElementById('arrivalInput').value;
@@ -186,12 +223,16 @@ $activities = getAllActivities($database);
             document.getElementById('priceDisplay').innerText = `Current price: $${totalCost.toFixed(2)}`;
         }
 
+        //--------------------------------------------------
+
         function calculateNights(arrival, departure) {
             const arrivalDate = new Date(arrival);
             const departureDate = new Date(departure);
             const timeDiff = departureDate - arrivalDate;
             return timeDiff / (1000 * 3600 * 24);
         }
+
+        //----------------------------------------------------
 
         function calculateRoomCost(roomId, nights) {
             const roomPrice = ROOM_PRICES[roomId];
@@ -201,6 +242,8 @@ $activities = getAllActivities($database);
         function calculateActivityCost(activities) {
             return activities.reduce((sum, activityId) => sum + ACTIVITY_PRICES[activityId], 0);
         }
+
+        //-------------------------------------------------------------------
 
         document.getElementById('roomInput').addEventListener('change', calculateTotalPrice);
         document.getElementById('arrivalInput').addEventListener('change', calculateTotalPrice);
@@ -214,7 +257,5 @@ $activities = getAllActivities($database);
 
 
 <?php
-
-
 
 require_once __DIR__."/assets/footer.php";

@@ -1,6 +1,5 @@
 <?php
-$BASE_URL = '/'; //"/yrgopelag/";
-//$BASE_URL = "/yrgopelag/";
+$BASE_URL = "/yrgopelag/";
 ?>
 <!DOCTYPE HTML>
     <head>

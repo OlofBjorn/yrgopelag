@@ -10,8 +10,6 @@
   background-color: var(--framecolour);
 }
 
-
-
 .day {
   aspect-ratio: 1 / 1;
   display: flex;
@@ -30,6 +28,8 @@
   font-weight: 600;
 }
 
+/*---BLANK DATE---*/
+
 .emptyDay{
-  background: var(--busycolour);
+  background: var(--framecolour);
 }
