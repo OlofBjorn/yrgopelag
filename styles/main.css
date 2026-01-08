@@ -156,9 +156,6 @@ body{
     padding-top:0rem;
 }
 
-#submissionform{
-    width:40vw;
-}
 
 #activityBookingField{
     background-color: var(--framecolour);
