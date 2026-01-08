@@ -1,6 +1,6 @@
 </body>
-<foot>
+<footer>
     <div class="footerText"> 
         Yrgopelag 2025-2026
     </div>
-</foot>
+</footer>

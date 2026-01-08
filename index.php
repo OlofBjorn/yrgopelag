@@ -65,7 +65,6 @@ $activities = getAllActivities($database);
         ROOMS
     </p>
 
-    <div id="roomsAndBooking">
         <div id="roomDisplay">
             <div id="roomsAndCalendars">
                 <?php foreach ($rooms as $room): ?>
@@ -88,6 +87,9 @@ $activities = getAllActivities($database);
                 <?php endforeach; ?>
             </div>
         </div>
+
+    <div id="roomsAndBooking">
+        
         <div id="submissionForm">
             <form action='backend/booking.php' method="post">
                 <label for="nameInput">name</label>

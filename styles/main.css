@@ -48,7 +48,7 @@ body{
 }
 
 #activityLabel{
-    width:91vw;
+    width:95%;
 }
 
 #headimages{
@@ -65,7 +65,6 @@ body{
 }
 
 #roomDisplay{
-    padding:5rem;
     padding-top:0rem;
     padding-bottom:0rem;
 }
@@ -123,7 +122,7 @@ body{
 }
 
 #roomLabel{
-    width:91vw;
+    width:95%;
 }
 
 #submissionform{
@@ -140,17 +139,20 @@ body{
     background-color: var(--headercolour);
     padding: 1rem 2rem;
     font-size:x-large;
+    flex:1;
 }
 
 .activities {
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
+    margin-left:auto;
+    margin-right:auto;
 }
 .activity{
     padding:2.5rem;
     background-color: var(--framecolour);
-    width: 22vw;
+    width: 425px;
 }
 
 

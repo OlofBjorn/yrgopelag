@@ -29,3 +29,7 @@
   color: var(--textcolour);
   font-weight: 600;
 }
+
+.emptyDay{
+  background: var(--busycolour);
+}

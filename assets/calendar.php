@@ -18,7 +18,7 @@ $leadingBlankDays = 4;
 
 <section class="calendar">
     <?php for ($i = 0; $i < $leadingBlankDays; $i++): ?>
-        <div class="day empty"></div>
+        <div class="emptyDay"></div>
     <?php endfor; ?>
 
     <?php for ($day = 1; $day <= 31; $day++): ?>
