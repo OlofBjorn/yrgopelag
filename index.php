@@ -12,8 +12,7 @@ $activities = getAllActivities($database);
 
 
 ?>
-<div id="contentWrapper">
-    <div id="titleContainer">
+<div id="titleContainer">
         <div id="hotelTitle">
             <h1> DINOSAUR HOTEL </h1>
         </div>
@@ -31,6 +30,7 @@ $activities = getAllActivities($database);
             <?php endfor; ?>
         </div>
     </div>
+<div id="contentWrapper">
 
     <div id="headImages">
         <img src="images/building.png" alt="building" class="image">
@@ -61,7 +61,33 @@ $activities = getAllActivities($database);
         <?php endforeach; ?>
     </div>
 
+    <p id="roomLabel" class="label">
+        ROOMS
+    </p>
+
     <div id="roomsAndBooking">
+        <div id="roomDisplay">
+            <div id="roomsAndCalendars">
+                <?php foreach ($rooms as $room): ?>
+                    <div class="roomRow">
+                        <section class="room">
+                            <img src="images/<?= htmlspecialchars($room['image']) ?>"
+                                class="roomImage">
+                            <h2 class="roomLabel"><?= htmlspecialchars($room['class']) ?></h2>
+                            <p class="roomText">
+                                Price per night: $<?= number_format($room['price_per_night'], 2) ?>
+                            </p>
+                            <p class="roomText"><?= htmlspecialchars($room['description']) ?></p>
+                        </section>
+
+                        <?php 
+                            $roomId = (int)$room['id'];
+                            require __DIR__ . "/assets/calendar.php"; 
+                        ?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
         <div id="submissionForm">
             <form action='backend/booking.php' method="post">
                 <label for="nameInput">name</label>
@@ -122,33 +148,7 @@ $activities = getAllActivities($database);
                 <input type="submit" value="submit"/>
             </form>
         </div>
-        <div id="roomDisplay">
-            <div id="roomDisplayLabels">
-                <p id="roomLabel" class="label">ROOMS</p>
-                <p id="calendarLabel" class="label">AVAILABILITY</p>
-            </div>
-
-            <div id="roomsAndCalendars">
-                <?php foreach ($rooms as $room): ?>
-                    <div class="roomRow">
-                        <section class="room">
-                            <img src="images/<?= htmlspecialchars($room['image']) ?>"
-                                class="roomImage">
-                            <h2 class="roomLabel"><?= htmlspecialchars($room['class']) ?></h2>
-                            <p class="roomText">
-                                Price per night: $<?= number_format($room['price_per_night'], 2) ?>
-                            </p>
-                            <p class="roomText"><?= htmlspecialchars($room['description']) ?></p>
-                        </section>
-
-                        <?php 
-                            $roomId = (int)$room['id'];
-                            require __DIR__ . "/assets/calendar.php"; 
-                        ?>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
+        
     </div>
 </div>
 

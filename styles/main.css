@@ -1,10 +1,4 @@
-:root{
-    --bgcolour: rgb(214, 199, 153);
-    --textcolour: black;
-    --headercolour: rgb(183, 172, 135);
-    --framecolour: rgb(184, 179, 164);
-    --mainfont: "Modern No. 20";
-}
+
 
 
 *{
@@ -14,7 +8,8 @@
 
 
 #contentWrapper{
-    width:100vw;
+    width:95vw;
+    padding:2vw;
 }
 
 body{
@@ -50,7 +45,10 @@ body{
     background-color: var(--headercolour);
     font-size: x-large;
     padding:2.5rem;
-    width: 40vw;
+}
+
+#activityLabel{
+    width:91vw;
 }
 
 #headimages{
@@ -67,22 +65,15 @@ body{
 }
 
 #roomDisplay{
-    display:grid;
-    grid-row-start: auto;
-    grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: auto;
-    column-gap: 5rem;
-    grid-template-areas: 
-    "roomDisplayLabels"
-    "roomsAndCalendars";
     padding:5rem;
-    width:40vw;
+    padding-top:0rem;
+    padding-bottom:0rem;
 }
 
 .room{
     background-color: var(--framecolour);
     height:auto;
-    width:auto;
+    width:25rem;
     padding:1rem;
 }
 
@@ -97,9 +88,6 @@ body{
 }
 
 .roomRow {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 5rem;
     align-items: start;
     margin:1rem;
 }
@@ -121,22 +109,21 @@ body{
 }
 
 #roomsAndBooking{
-    display:grid;
-    grid-row-start: auto;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: auto;
-    column-gap: 5rem;
-    grid-template-areas: 
-    "submissionForm roomDisplay";
     padding:5rem;
+    padding-top:0rem;
 }
 
 #roomsAndCalendars{
-    width:20vw;
+    display:flex;
+    justify-content:space-between;
 }
 
 #roomDisplayLabels{
     width:40vw;
+}
+
+#roomLabel{
+    width:91vw;
 }
 
 #submissionform{
@@ -154,3 +141,16 @@ body{
     padding: 1rem 2rem;
     font-size:x-large;
 }
+
+.activities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+.activity{
+    padding:2.5rem;
+    background-color: var(--framecolour);
+    width: 22vw;
+}
+
+
