@@ -46,3 +46,12 @@ activity_id INTEGER,
 FOREIGN KEY (visit_id) REFERENCES visits(id),
 FOREIGN KEY (activity_id) REFERENCES activities(id)
 );
+## Code Review
+1. Booking.php:14 you made a bool variable called succes that is set to false. In your code you type "$success = false;" each time you bring up the variable you set it to false. There is no need for you to be repeating yourself and writing "$success = false;" if you've already created the variable as false. Only if you were to change this variable later on would you want to write "$success = false" to change it back otherwise just type "$success;".
+2. Booking.php:30. Instead of making it so that you get an error when the transferCode is empty you should've just made it required to type in the transferCode. This also applies to the other input fields where you haven't set them to required so they can be submitted empty.
+3. Functions.php:80. You made a funciton called calculateRoomCostPHP where you included the parameter "$nights" but the never use it. You should either multiply price by $nights or remove it.
+4. Functions.php:152. The tiermap array should be at the top of the file to avoid repeating it on every call.
+5. Index.php:9 and index.php:152. You've created a variable for the function "getAllActivities($database)" called $activities. On row 152 you type "$activities = getAllActivities($database);" instead of using the variable again.
+6. Index.php:197-256. You should move all the JS code to a separate JavaScript file. It's much simpler to maintain that way and also makes your project look better.
+7. Index.php:185. You should change type submit to "<button type="submit">Submit</button>". This is for better symantics and also easier to change the styling in css afterwards.
+ 
